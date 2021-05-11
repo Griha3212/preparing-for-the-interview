@@ -768,8 +768,144 @@ useEffect(() => {
 }, [])
 ```
 
+# Higher-Order Function
+
+## What is Higher-Order Function?
+
+Функции высшего порядка — это функции, которые работают с другими функциями, либо принимая их в виде параметров, либо возвращая их. Проще говоря, функцией высшего порядка называется такая функция, которая принимает функцию как аргумент или возвращает функцию в виде выходного значения.
+Например, встроенные функции JavaScript Array.prototype.map, Array.prototype.filter и Array.prototype.reduce являются функциями высшего порядка.
+Функции высшего порядка в действии
+Рассмотрим примеры использования встроенных в JS функций высшего порядка и сравним такой подход с выполнением аналогичных действий без использования таких функций.
+Метод Array.prototype.map
+Метод map() создаёт новый массив, вызывая, для обработки каждого элемента входного массива, коллбэк, переданный ему в виде аргумента. Этот метод берёт каждое возвращённое коллбэком значение и помещает его в выходной массив.
+Функция обратного вызова, передаваемая map(), принимает три аргумента: element (элемент), index(индекс) и array (массив).
+
+Functions that operate on other functions, either by taking them as arguments or by returning them are called higher-order functions.
+
+## For examples
+
+We can have functions that create new functions.
+
+```js
+function greaterThan(n) {
+  return m => m > n
+}
+
+const greaterThan10 = greaterThan(10)
+
+console.log(greaterThan10(11))
+// true
+```
+
+We can have functions that change other functions.
+
+```js
+function noisy(f) {
+  return (...args) => {
+    console.log("calling with", args)
+    const result = f(...args)
+    console.log("called with", args, ", returned", result)
+    return result
+  }
+}
+noisy(Math.min)(3, 2, 1)
+// calling with [3, 2, 1]
+// called with [3, 2, 1] , returned 1
+```
+
+We can even write functions that provide new types of control flow.
+
+```js
+function unless(test, then) {
+  if (!test) then()
+}
+
+repeat(3, n => {
+  unless(n % 2 == 1, () => {
+    console.log(n, "is even")
+  })
+})
+// 0 is even
+// 2 is even
+```
+
+There is a built-in array method, forEach, that provides something like a for/of loop as a higher-order function.
+
+```js
+["A", "B"].forEach(l => console.log(l));
+// A
+// B
+```
+
+
+# Higher-Order Component
+
+# Higher-Order Component
+
+## What is Higher-Order Component?
+
+* Higher-Order Components in ReactJS is similar to Higher-Order Functions.
+* A higher-order component is a function that takes a component and returns a new component.
+* A higher-order component transforms a component into another component.
+
+## For examples
+
+Компонент высшего порядка (Higher-Order Component, HOC) — это один из продвинутых способов для повторного использования логики. HOC не являются частью API React, но часто применяются из-за композиционной природы компонентов.
+шаблон проектирования
+Говоря просто, компонент высшего порядка — это функция, которая принимает компонент и возвращает новый компонент.
+Если обычный компонент преобразует пропсы в UI, то компонент высшего порядка преобразует компонент в другой компонент.
+HOC часто встречаются в сторонних библиотеках, например connect в Redux и createFragmentContainer в Relay.
+
+
+Let's create a HOC that returns the component unaltered.
+
+```jsx
+const withElement = Element => () => <Element />
+```
+
+Let's make this a little bit more useful by adding the property and the color to that element.
+
+```jsx
+const withColor = Element => props => <Element {...props} color="red" />
+```
+
+Then we use this HOC (withColor) in a component.
+
+```jsx
+const Button = () => {
+  return <button>My Button</button>
+}
+
+const ColoredButton = withColor(Button)
+```
+
+Then we can finally render the ColoredButton component in our app.
+
+```jsx
+function App() {
+  return (
+    <ColoredButton />
+  )
+}
+```
 
 # Conditional Rendering
+
+Для условного рендеринга можно использовать обычные if или тернарные операторы. Кроме того, вы можете встраивать в JSX любое выражение посредством оборачивания его в фигурные скобки, а также совместно с логическим оператором && (короткие вычисления).
+
+```
+<h1>Привет!</h1>
+{
+    messages.length > 0 && !isLogin?
+      <h2>
+          У вас {messages.length} непрочитанных сообщений.
+      </h2>
+      :
+      <h2>
+          У вас нет непрочитанных сообщений.
+      </h2>
+}
+```
 
 # Destructuring
 
